@@ -1,3 +1,4 @@
+from chest_xray_vision import __version__
 from chest_xray_vision.data_models import (
     ClassifyRequest,
     ClassifyResponse,
@@ -11,7 +12,11 @@ from chest_xray_vision.utils import (
 from fastapi import FastAPI, HTTPException
 
 
-app = FastAPI()
+app = FastAPI(
+    title="Chest X-ray Vision",
+    description="An API for classifying chest X-ray images with lung cancer.",
+    version=__version__,
+)
 
 
 @app.post("/classify")

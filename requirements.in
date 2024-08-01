@@ -1,4 +1,5 @@
 fastapi[all]
+mangum
 pydantic
 torchxrayvison
 uvicorn

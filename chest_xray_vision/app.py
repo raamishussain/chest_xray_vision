@@ -10,6 +10,7 @@ from chest_xray_vision.utils import (
     ImageShapeError,
 )
 from fastapi import FastAPI, HTTPException
+from mangum import Mangum
 
 
 app = FastAPI(
@@ -43,3 +44,5 @@ def classify(request: ClassifyRequest) -> ClassifyResponse:
     )
 
     return response
+
+handler = Mangum(app)

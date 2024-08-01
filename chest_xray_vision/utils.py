@@ -7,7 +7,7 @@ import torchxrayvision as xrv
 
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typin import Dict
+from typing import Dict
 from chest_xray_vision.data_models import LABEL_MAPPING
 
 

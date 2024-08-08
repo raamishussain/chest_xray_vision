@@ -63,7 +63,7 @@ def classify_image(image_bytes: bytes) -> Dict:
 
 def get_true_label(image_id: str) -> int:
     """Get the true label for the image"""
-    image_df = pd.read_csv("chest_xray_data.csv")
+    image_df = pd.read_csv("chest_xray_vision/chest_xray_data.csv")
     true_label = image_df[image_df["image_id"] == image_id][
         "true_label"
     ].values[0]

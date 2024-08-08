@@ -41,7 +41,7 @@ uvicorn chest_xray_vision.app:app --host "0.0.0.0" --port "8000"
 
 Now open up a web browser and navigate to `http://localhost:8000/docs`. You should see the following page:
 
-(swagger_ui)[swagger_ui.png]
+[swagger_ui](swagger_ui.png)
 
 Click on the green `POST` button to expand the API. Then click on `Try it out` on the right side. Now you can choose an image file from the provided images and upload it to the application. Then click `Execute` to run the model.
 

@@ -1,6 +1,5 @@
 from chest_xray_vision import __version__
 from chest_xray_vision.data_models import (
-    ClassifyRequest,
     ClassifyResponse,
     LABEL_MAPPING,
 )
@@ -9,7 +8,7 @@ from chest_xray_vision.utils import (
     get_true_label,
     ImageShapeError,
 )
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, Response
 from mangum import Mangum
 
 
@@ -21,11 +20,16 @@ app = FastAPI(
 
 
 @app.post("/classify")
-def classify(request: ClassifyRequest) -> ClassifyResponse:
+def classify(
+    image: UploadFile,
+    response: Response
+) -> ClassifyResponse:
     """Classify a chest X-ray image as normal or cancerous."""
 
+    image_id = image.filename.split(".")[0]
+
     try:
-        results = classify_image(request.image_bytes)
+        results = classify_image(image)
     except ImageShapeError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
@@ -34,10 +38,10 @@ def classify(request: ClassifyRequest) -> ClassifyResponse:
     else:
         predicted_label = LABEL_MAPPING[0]
 
-    true_label = get_true_label(request.image_id)
+    true_label = get_true_label(image_id)
 
     response = ClassifyResponse(
-        image_id=request.image_id,
+        image_id=image_id,
         predicted_label=predicted_label,
         prediction_confidence=results["preds"]["Nodule"],
         true_label=true_label,

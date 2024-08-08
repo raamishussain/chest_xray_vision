@@ -5,6 +5,7 @@ import torch
 import torchvision
 import torchxrayvision as xrv
 
+from fastapi import UploadFile
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Dict
@@ -17,7 +18,7 @@ class ImageShapeError(Exception):
     pass
 
 
-def classify_image(image_bytes: bytes) -> Dict:
+def classify_image(image: UploadFile) -> Dict:
     """Classify a chest X-ray image using TorchXRayVision"""
 
     # Load the model
@@ -28,14 +29,14 @@ def classify_image(image_bytes: bytes) -> Dict:
         [xrv.datasets.XRayCenterCrop(), xrv.datasets.XRayResizer(224)]
     )
 
-    with TemporaryDirectory() as temp_dir:
-        # read in base64 encoded image from request and save to file
-        image_path = Path(temp_dir) / "image.png"
-        with open(image_path, "wb") as f:
-            f.write(base64.b64decode(image_bytes))
+    # with TemporaryDirectory() as temp_dir:
+    #     # read in base64 encoded image from request and save to file
+    #     image_path = Path(temp_dir) / "image.png"
+    #     with open(image_path, "wb") as f:
+    #         f.write(base64.b64decode(image_bytes))
 
-        img = skimage.io.imread(image_path)
-        img = xrv.datasets.normalize(img, 255)
+    img = skimage.io.imread(image.file)
+    img = xrv.datasets.normalize(img, 255)
 
     # Check that images are 2D arrays
     if len(img.shape) > 2:
